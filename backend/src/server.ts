@@ -1,11 +1,12 @@
-import express from "express";
+import "./config/env";
+import { createServer } from "http";
+import app from "./app";
+import { initializeSocket } from "./realtime/socket";
 
-const app = express();
+const server = createServer(app);
 
-app.get("/", (req, res) => {
-  res.send("Backend running");
-});
+initializeSocket(server);
 
-app.listen(5000, () => {
+server.listen(5000, () => {
   console.log("Server running on port 5000");
 });
