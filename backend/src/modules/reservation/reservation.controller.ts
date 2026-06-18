@@ -1,18 +1,32 @@
 import type { NextFunction, Request, Response } from "express";
-import { createReservation } from "./reservation.service";
+import { createReservation, getUserActiveReservations } from "./reservation.service";
 
 export async function reserveDropController(
-  req: Request<{ dropId: string }>,
+  req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   try {
-    const reservation = await createReservation({
-      dropId: req.params.dropId,
-      userId: req.body.userId,
-    });
-
+    const { userId, dropId } = req.body;
+    if (!userId || !dropId) {
+      res.status(400).json({ error: "userId and dropId are required" });
+      return;
+    }
+    const reservation = await createReservation({ userId, dropId });
     res.status(201).json(reservation);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getUserReservationsController(
+  req: Request<{ userId: string }>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const reservations = await getUserActiveReservations(req.params.userId);
+    res.status(200).json(reservations);
   } catch (error) {
     next(error);
   }

@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { purchaseReservationController } from "./purchase.controller";
+import { purchaseReservationController, getUserPurchasesController } from "./purchase.controller";
 
 const router = Router();
 
-router.post("/purchase/:reservationId", purchaseReservationController);
+router.post("/purchases", purchaseReservationController);
+router.get("/purchases/user/:userId", getUserPurchasesController);
 
 export default router;

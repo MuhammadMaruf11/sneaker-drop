@@ -4,6 +4,7 @@ type StockPayload = {
   dropId: string;
   availableStock: number;
   stockVersion: number;
+  totalStock?: number;
 };
 
 type ReservationPayload = {
@@ -19,6 +20,7 @@ type PurchasePayload = {
   userId: string;
   dropId: string;
   createdAt: Date;
+  username?: string; // for activity feed
 };
 
 export function emitStockUpdated(payload: StockPayload) {
